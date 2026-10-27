@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PixelPop Arcade | GTM and GA4 Practice Site</title>
+
+<!--
+  =====================================================================
+  STEP 1: REPLACE GTM-XXXXXXX (below, and in the <noscript> tag) WITH YOUR
+  OWN CONTAINER ID. Create it at tagmanager.google.com (Web container).
+  =====================================================================
+-->
+<!-- Google Tag Manager -->
+<script>
+window.dataLayer = window.dataLayer || [];
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-XXXXXXX');
+</script>
+<!-- End Google Tag Manager -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#EEF0FA; --ink:#1B1F4B; --card:#FFFFFF;
+  --coral:#FF5C5C; --mint:#2EC4A0; --sun:#FFC93C; --sky:#6C8BFF;
+  --shadow:5px 5px 0 var(--ink);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Nunito',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+h1,h2,h3{font-family:'Lilita One','Nunito',sans-serif;font-weight:400;line-height:1.1;margin:0 0 .5em}
+h1{font-size:clamp(2.6rem,7vw,4.6rem)}
+h2{font-size:2rem}
+a{color:inherit}
+section{max-width:960px;margin:0 auto;padding:56px 20px}
+:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+
+header.nav{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:3px solid var(--ink)}
+.nav-in{max-width:960px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo{font-family:'Lilita One',sans-serif;font-size:1.6rem;text-decoration:none;margin-right:auto}
+.nav a.link{font-weight:800;text-decoration:none;padding:4px 2px;border-bottom:3px solid transparent}
+.nav a.link:hover{border-bottom-color:var(--coral)}
+
+.btn{font:inherit;font-weight:800;cursor:pointer;background:var(--sun);color:var(--ink);border:3px solid var(--ink);
+  border-radius:12px;padding:10px 20px;box-shadow:var(--shadow);transition:transform .08s,box-shadow .08s;text-decoration:none;display:inline-block}
+.btn:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--ink)}
+.btn.coral{background:var(--coral);color:#fff}
+.btn.mint{background:var(--mint)}
+.btn.ghost{background:var(--card)}
+.btn.small{padding:6px 12px;font-size:.9rem;box-shadow:3px 3px 0 var(--ink)}
+
+.hero{display:grid;gap:28px;grid-template-columns:1.2fr 1fr;align-items:center}
+.hero p{font-size:1.15rem;max-width:46ch}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
+.mascot{background:var(--sky);border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);aspect-ratio:1;display:grid;place-items:center;font-size:7rem}
+
+.panel{background:var(--card);border:3px solid var(--ink);border-radius:20px;box-shadow:var(--shadow);padding:24px}
+
+/* Game */
+.game-top{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.stat{background:var(--bg);border:3px solid var(--ink);border-radius:10px;padding:4px 14px;font-weight:800}
+.diff{display:flex;gap:8px;margin-left:auto}
+.diff button[aria-pressed="true"]{background:var(--mint)}
+#arena{position:relative;height:340px;background:repeating-linear-gradient(45deg,#F6F7FD,#F6F7FD 14px,#ECEEFA 14px,#ECEEFA 28px);
+  border:3px solid var(--ink);border-radius:14px;overflow:hidden}
+#arena .overlay{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;background:rgba(238,240,250,.88)}
+#star{position:absolute;width:56px;height:56px;border:0;background:none;font-size:2.6rem;cursor:pointer;display:none;line-height:1}
+#star:active{transform:scale(.85)}
+
+/* Shop */
+.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.item{text-align:center}
+.item .emoji{font-size:3.4rem}
+.price{font-weight:800;margin:.2rem 0 .8rem}
+
+/* Promo + forms */
+#promo-banner{background:var(--coral);color:#fff;text-align:center}
+#promo-banner h2{margin-bottom:.2em}
+form{display:grid;gap:12px;max-width:420px}
+label{font-weight:800}
+input[type=text],input[type=email],input[type=search]{font:inherit;padding:10px 12px;border:3px solid var(--ink);border-radius:10px;width:100%}
+.video-wrap{aspect-ratio:16/9;border:3px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.video-wrap iframe{width:100%;height:100%;border:0}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.tall{height:520px;display:grid;place-items:center;text-align:center}
+footer{border-top:3px solid var(--ink);text-align:center;padding:28px 20px 90px}
+
+/* Live dataLayer viewer */
+#dl-toggle{position:fixed;right:16px;bottom:16px;z-index:50}
+#dl-panel{position:fixed;right:16px;bottom:70px;width:min(420px,calc(100vw - 32px));max-height:55vh;z-index:50;display:none;flex-direction:column;
+  background:var(--ink);color:#E8EBFF;border:3px solid var(--ink);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+#dl-panel.open{display:flex}
+#dl-head{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:#2A2F6B;font-weight:800}
+#dl-log{overflow:auto;padding:10px 14px;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace}
+#dl-log .ev{border-bottom:1px solid #3A3F7F;padding:6px 0}
+#dl-log .name{color:var(--sun);font-weight:700}
+#dl-log pre{margin:2px 0 0;white-space:pre-wrap;word-break:break-word}
+
+@media (max-width:760px){.hero{grid-template-columns:1fr}.mascot{display:none}.diff{margin-left:0}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="logo" href="#top" id="nav-logo">PixelPop Arcade</a>
+    <a class="link nav-link" href="#games" id="nav-games">Games</a>
+    <a class="link nav-link" href="#shop" id="nav-shop">Shop</a>
+    <a class="link nav-link" href="#watch" id="nav-watch">Watch</a>
+    <a class="link nav-link" href="#contact" id="nav-contact">Join</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <h1>Pop the stars. Beat the clock.</h1>
+    <p>A tiny arcade built for one purpose: giving you something real to track. Every button, form and game round on this page sends data you can catch with Google Tag Manager.</p>
+    <div class="hero-actions">
+      <a class="btn coral" id="btn-hero-play" href="#games" data-track="hero_play_click">Play now</a>
+      <a class="btn ghost" id="btn-hero-shop" href="#shop" data-track="hero_shop_click">Visit the shop</a>
+    </div>
+  </div>
+  <div class="mascot" aria-hidden="true">🎮</div>
+</section>
+
+<!-- GAME -->
+<section id="games">
+  <h2>Star Pop</h2>
+  <div class="panel">
+    <div class="game-top">
+      <span class="stat">Score: <span id="score">0</span></span>
+      <span class="stat">Time: <span id="time">20</span>s</span>
+      <div class="diff" role="group" aria-label="Difficulty">
+        <button class="btn small ghost difficulty-btn" data-difficulty="easy" aria-pressed="false">Easy</button>
+        <button class="btn small ghost difficulty-btn" data-difficulty="normal" aria-pressed="true">Normal</button>
+        <button class="btn small ghost difficulty-btn" data-difficulty="hard" aria-pressed="false">Hard</button>
+      </div>
+    </div>
+    <div id="arena">
+      <button id="star" aria-label="Star target">⭐</button>
+      <div class="overlay" id="overlay">
+        <div>
+          <h3 id="overlay-title">Ready?</h3>
+          <p id="overlay-text">Click as many stars as you can in 20 seconds.</p>
+          <button class="btn coral" id="btn-play" data-track="play_button">Play</button>
+        </div>
+      </div>
+    </div>
+    <p style="margin:14px 0 0">Best score this session: <strong id="best">0</strong></p>
+  </div>
+</section>
+
+<!-- PROMO (use for Element Visibility trigger: CSS selector #promo-banner) -->
+<section id="promo-banner">
+  <h2>Weekend bonus: double stars</h2>
+  <p>This banner exists so you can practise the Element Visibility trigger.</p>
+  <a class="btn ghost" id="btn-promo" href="#shop" data-track="promo_click">Grab the bonus</a>
+</section>
+
+<!-- SHOP (ecommerce events) -->
+<section id="shop">
+  <h2>Shop</h2>
+  <div class="grid">
+    <div class="panel item" data-item-id="SKU_001" data-item-name="Gold Star Pack" data-price="4.99">
+      <div class="emoji">🌟</div><h3>Gold Star Pack</h3><div class="price">$4.99</div>
+      <button class="btn mint add-to-cart">Add to cart</button>
+    </div>
+    <div class="panel item" data-item-id="SKU_002" data-item-name="Rocket Skin" data-price="9.99">
+      <div class="emoji">🚀</div><h3>Rocket Skin</h3><div class="price">$9.99</div>
+      <button class="btn mint add-to-cart">Add to cart</button>
+    </div>
+    <div class="panel item" data-item-id="SKU_003" data-item-name="Time Freeze" data-price="2.49">
+      <div class="emoji">⏱️</div><h3>Time Freeze</h3><div class="price">$2.49</div>
+      <button class="btn mint add-to-cart">Add to cart</button>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:20px;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+    <strong>Cart: <span id="cart-count">0</span> items | $<span id="cart-total">0.00</span></strong>
+    <button class="btn coral" id="btn-checkout">Checkout</button>
+    <button class="btn ghost" id="btn-clear-cart">Clear cart</button>
+  </div>
+</section>
+
+<!-- VIDEO (YouTube trigger) -->
+<section id="watch">
+  <h2>Watch the trailer</h2>
+  <p>The player has the JS API enabled so GTM’s built-in YouTube Video trigger works. Swap the video ID for any video you like.</p>
+  <div class="video-wrap">
+    <iframe id="trailer" title="Trailer"
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1"
+      allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</section>
+
+<!-- LINKS -->
+<section id="links">
+  <h2>Links to click</h2>
+  <div class="row">
+    <a class="btn ghost" id="link-outbound" href="https://www.google.com" target="_blank" rel="noopener">Outbound link (google.com)</a>
+    <a class="btn ghost" id="link-download" href="sample.pdf" download>Download the game guide (.pdf)</a>
+    <a class="btn ghost" id="link-mailto" href="mailto:hello@example.com">Email us</a>
+    <a class="btn ghost" id="link-tel" href="tel:+10000000000">Call us</a>
+  </div>
+</section>
+
+<!-- SEARCH + ERROR TEST -->
+<section id="tools">
+  <h2>Search and error test</h2>
+  <div class="panel">
+    <form id="search-form" role="search" style="max-width:520px">
+      <label for="q">Search games</label>
+      <div class="row">
+        <input type="search" id="q" name="q" placeholder="Try: star, rocket, puzzle" style="flex:1;min-width:180px">
+        <button class="btn" id="btn-search" type="submit">Search</button>
+      </div>
+    </form>
+    <hr style="border:0;border-top:3px dashed var(--ink);margin:22px 0">
+    <button class="btn coral" id="btn-error">Throw a JavaScript error</button>
+    <p style="margin-bottom:0">Use it to practise the JavaScript Error trigger.</p>
+  </div>
+</section>
+
+<!-- Tall spacer for the scroll depth trigger -->
+<section class="tall"><div><h2>Keep scrolling</h2><p>This tall block helps test Scroll Depth triggers (25, 50, 75, 90 percent).</p></div></section>
+
+<!-- NEWSLETTER FORM -->
+<section id="contact">
+  <h2>Join the leaderboard</h2>
+  <div class="panel">
+    <form id="signup-form" name="signup">
+      <label for="player">Player name</label>
+      <input type="text" id="player" name="player" required>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+      <button class="btn coral" id="btn-signup" type="submit">Sign up</button>
+      <p id="signup-msg" role="status" style="margin:0;font-weight:800"></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p>PixelPop Arcade is a practice site for Google Tag Manager and GA4. No real purchases happen here.</p>
+</footer>
+
+<!-- Live dataLayer viewer -->
+<button class="btn small" id="dl-toggle" aria-expanded="false">dataLayer</button>
+<aside id="dl-panel" aria-label="Live dataLayer events">
+  <div id="dl-head"><span>Live dataLayer</span><button class="btn small ghost" id="dl-clear">Clear</button></div>
+  <div id="dl-log"></div>
+</aside>
+
+<script>
+/* =====================================================================
+   PixelPop Arcade: tracking helpers
+   Every interaction pushes a named event into window.dataLayer.
+   In GTM, create a "Custom Event" trigger whose Event name matches.
+   ===================================================================== */
+window.dataLayer = window.dataLayer || [];
+
+function track(eventName, params){
+  window.dataLayer.push(Object.assign({ event: eventName }, params || {}));
+}
+
+/* ---------- Live viewer: mirrors every dataLayer push on screen ---------- */
+(function(){
+  var log = document.getElementById('dl-log');
+  var panel = document.getElementById('dl-panel');
+  var toggle = document.getElementById('dl-toggle');
+
+  function show(obj){
+    var d = document.createElement('div');
+    d.className = 'ev';
+    var name = obj && obj.event ? obj.event : '(data only)';
+    var body = {};
+    for (var k in obj){ if (k !== 'event') body[k] = obj[k]; }
+    var n = document.createElement('div'); n.className = 'name'; n.textContent = name;
+    d.appendChild(n);
+    if (Object.keys(body).length){
+      var p = document.createElement('pre');
+      try { p.textContent = JSON.stringify(body, null, 1); } catch(e){ p.textContent = '[unserialisable]'; }
+      d.appendChild(p);
+    }
+    log.insertBefore(d, log.firstChild);
+  }
+
+  // Show anything already in the dataLayer, then wrap push
+  window.dataLayer.forEach(function(o){ if (o && typeof o === 'object') show(o); });
+  var origPush = window.dataLayer.push.bind(window.dataLayer);
+  window.dataLayer.push = function(){
+    for (var i = 0; i < arguments.length; i++){
+      var a = arguments[i];
+      if (a && typeof a === 'object' && !Array.isArray(a) && typeof a.length === 'undefined') show(a);
+    }
+    return origPush.apply(null, arguments);
+  };
+
+  toggle.addEventListener('click', function(){
+    var open = panel.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+  document.getElementById('dl-clear').addEventListener('click', function(){ log.innerHTML = ''; });
+})();
+
+/* ---------- Page-level data (read it with Data Layer Variables) ---------- */
+track('page_data_ready', { page_type: 'home', site_section: 'arcade', player_status: 'guest' });
+
+/* ---------- Generic click tracking via data-track attribute ---------- */
+document.addEventListener('click', function(e){
+  var el = e.target.closest('[data-track]');
+  if (el) track('ui_click', { click_name: el.getAttribute('data-track'), click_id: el.id || undefined });
+});
+
+/* ---------- Navigation clicks ---------- */
+document.querySelectorAll('.nav-link').forEach(function(a){
+  a.addEventListener('click', function(){ track('nav_click', { nav_item: a.textContent.trim() }); });
+});
+
+/* ---------- Virtual pageviews on hash change ----------
+   GTM's History Change trigger also fires on hash changes.
+   This custom event is an alternative for SPA-style practice. */
+window.addEventListener('hashchange', function(){
+  track('virtual_page_view', { virtual_page_path: location.hash || '#top', virtual_page_title: document.title });
+});
+
+/* =====================================================================
+   GAME: Star Pop
+   Events: difficulty_select, game_start, star_click (every 5th), game_end
+   ===================================================================== */
+(function(){
+  var SETTINGS = { easy:{size:70,move:900}, normal:{size:56,move:700}, hard:{size:40,move:480} };
+  var DURATION = 20;
+  var arena = document.getElementById('arena');
+  var star = document.getElementById('star');
+  var overlay = document.getElementById('overlay');
+  var scoreEl = document.getElementById('score');
+  var timeEl = document.getElementById('time');
+  var bestEl = document.getElementById('best');
+  var titleEl = document.getElementById('overlay-title');
+  var textEl = document.getElementById('overlay-text');
+  var playBtn = document.getElementById('btn-play');
+
+  var difficulty = 'normal', score = 0, best = 0, left = DURATION, running = false, tick, mover, startedAt = 0, rounds = 0;
+
+  document.querySelectorAll('.difficulty-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      if (running) return;
+      difficulty = b.dataset.difficulty;
+      document.querySelectorAll('.difficulty-btn').forEach(function(x){ x.setAttribute('aria-pressed', x === b); });
+      track('difficulty_select', { difficulty: difficulty });
+    });
+  });
+
+  function moveStar(){
+    var s = SETTINGS[difficulty].size;
+    star.style.width = star.style.height = s + 'px';
+    star.style.fontSize = (s * 0.8) + 'px';
+    star.style.left = Math.random() * (arena.clientWidth - s) + 'px';
+    star.style.top = Math.random() * (arena.clientHeight - s) + 'px';
+  }
+
+  function start(){
+    rounds++;
+    score = 0; left = DURATION; running = true; startedAt = Date.now();
+    scoreEl.textContent = 0; timeEl.textContent = left;
+    overlay.style.display = 'none'; star.style.display = 'block';
+    moveStar();
+    mover = setInterval(moveStar, SETTINGS[difficulty].move);
+    tick = setInterval(function(){
+      left--; timeEl.textContent = left;
+      if (left <= 0) end();
+    }, 1000);
+    track('game_start', { game_name: 'star_pop', difficulty: difficulty, round_number: rounds });
+  }
+
+  function end(){
+    running = false; clearInterval(tick); clearInterval(mover);
+    star.style.display = 'none'; overlay.style.display = 'grid';
+    var isBest = score > best;
+    if (isBest){ best = score; bestEl.textContent = best; }
+    titleEl.textContent = 'Time up! Score: ' + score;
+    textEl.textContent = isBest ? 'New best score. Play again?' : 'Nice round. Play again?';
+    playBtn.textContent = 'Play again';
+    track('game_end', {
+      game_name: 'star_pop', difficulty: difficulty, score: score,
+      duration_seconds: Math.round((Date.now() - startedAt) / 1000), new_best: isBest
+    });
+    // GA4 recommended event
+    track('post_score', { score: score, level: difficulty, character: 'star_pop' });
+  }
+
+  star.addEventListener('click', function(){
+    if (!running) return;
+    score++; scoreEl.textContent = score;
+    if (score % 5 === 0) track('star_milestone', { score: score, difficulty: difficulty });
+    moveStar();
+  });
+
+  playBtn.addEventListener('click', start);
+})();
+
+/* =====================================================================
+   SHOP: GA4 ecommerce events
+   Events: view_item_list, add_to_cart, begin_checkout, purchase, remove_from_cart
+   ===================================================================== */
+(function(){
+  var cart = [];
+  var countEl = document.getElementById('cart-count');
+  var totalEl = document.getElementById('cart-total');
+
+  function items(){
+    return cart.map(function(i){ return { item_id:i.id, item_name:i.name, price:i.price, quantity:1 }; });
+  }
+  function total(){ return cart.reduce(function(s,i){ return s + i.price; }, 0); }
+  function render(){ countEl.textContent = cart.length; totalEl.textContent = total().toFixed(2); }
+
+  // Fire once when the shop list loads
+  track('view_item_list', {
+    ecommerce: {
+      item_list_name: 'Arcade shop',
+      items: Array.prototype.map.call(document.querySelectorAll('#shop .item'), function(el, idx){
+        return { item_id: el.dataset.itemId, item_name: el.dataset.itemName, price: parseFloat(el.dataset.price), index: idx };
+      })
+    }
+  });
+
+  document.querySelectorAll('.add-to-cart').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = btn.closest('.item');
+      var p = { id: el.dataset.itemId, name: el.dataset.itemName, price: parseFloat(el.dataset.price) };
+      cart.push(p); render();
+      window.dataLayer.push({ ecommerce: null }); // clear the previous ecommerce object
+      track('add_to_cart', {
+        ecommerce: { currency: 'USD', value: p.price, items: [{ item_id:p.id, item_name:p.name, price:p.price, quantity:1 }] }
+      });
+    });
+  });
+
+  document.getElementById('btn-clear-cart').addEventListener('click', function(){
+    if (!cart.length) return;
+    window.dataLayer.push({ ecommerce: null });
+    track('remove_from_cart', { ecommerce: { currency:'USD', value: total(), items: items() } });
+    cart = []; render();
+  });
+
+  document.getElementById('btn-checkout').addEventListener('click', function(){
+    if (!cart.length){ alert('Your cart is empty. Add an item first.'); return; }
+    window.dataLayer.push({ ecommerce: null });
+    track('begin_checkout', { ecommerce: { currency:'USD', value: total(), items: items() } });
+    // Demo "payment": fires purchase straight away
+    window.dataLayer.push({ ecommerce: null });
+    track('purchase', {
+      ecommerce: { transaction_id: 'T_' + Date.now(), currency:'USD', value: total(), tax: 0, shipping: 0, items: items() }
+    });
+    alert('Demo purchase complete. No money was taken.');
+    cart = []; render();
+  });
+})();
+
+/* =====================================================================
+   FORMS, SEARCH, LINKS, ERRORS
+   ===================================================================== */
+document.getElementById('signup-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  var name = document.getElementById('player').value.trim();
+  // Never push personal data like email into the dataLayer
+  track('sign_up', { method: 'leaderboard_form', form_id: 'signup-form', player_name_length: name.length });
+  document.getElementById('signup-msg').textContent = 'You are on the board, ' + name + '.';
+  this.reset();
+});
+
+document.getElementById('search-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  var term = document.getElementById('q').value.trim();
+  if (term) track('search', { search_term: term });
+});
+
+document.getElementById('link-outbound').addEventListener('click', function(){
+  track('outbound_click', { link_url: this.href, link_domain: this.hostname });
+});
+document.getElementById('link-download').addEventListener('click', function(){
+  track('file_download', { file_name: 'sample.pdf', file_extension: 'pdf', link_text: this.textContent.trim() });
+});
+
+document.getElementById('btn-error').addEventListener('click', function(){
+  // Unhandled on purpose, so GTM's JavaScript Error trigger can catch it
+  setTimeout(function(){ throw new Error('Practice error from PixelPop Arcade'); }, 0);
+});
+</script>
+</body>
+</html>
